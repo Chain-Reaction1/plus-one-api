@@ -123,4 +123,18 @@ router.delete('/events/:id', requireToken, (req, res, next) => {
     .catch(next)
 })
 
+router.delete('/events/:id/rsvp/:userid', requireToken, (req, res, next) => {
+  Event.findById(req.params.id)
+    .then(() => console.log(req.params.id))
+    .then(handle404)
+    .then(event => {
+      // delete the event ONLY IF the above didn't throw
+      event.guests.deleteOne({_id: req.params.userid})
+    })
+    // send back 204 and no content if the deletion succeeded
+    .then(() => res.sendStatus(204))
+    // if an error occurs, pass it to the handler
+    .catch(next)
+})
+
 module.exports = router
