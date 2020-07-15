@@ -31,6 +31,7 @@ const router = express.Router()
 // GET /events
 router.get('/events', (req, res, next) => {
   Event.find()
+    .populate('guests')
     .then(events => {
       // `events` will be an array of Mongoose documents
       // we want to convert each one to a POJO, so we use `.map` to
@@ -94,7 +95,17 @@ router.patch('/events/:id', requireToken, removeBlanks, (req, res, next) => {
     // if an error occurs, pass it to the handler
     .catch(next)
 })
-
+// Adds a user id to the guests array for RSVP feature
+router.patch('/events/:id/rsvp', requireToken, (req, res, next) => {
+  delete req.body.event.owner
+  Event.findById(req.params.id)
+    .then(handle404)
+    .then(event => {
+      return event.updateOne(req.body.event)
+    })
+    .then(() => res.sendStatus(204))
+    .catch(next)
+})
 // DESTROY
 // DELETE /events/5a7db6c74d55bc51bdf39793
 router.delete('/events/:id', requireToken, (req, res, next) => {

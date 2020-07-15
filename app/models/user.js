@@ -1,4 +1,5 @@
 const mongoose = require('mongoose')
+const eventSchema = require('./eventSchema')
 
 const userSchema = new mongoose.Schema({
   email: {
@@ -6,10 +7,15 @@ const userSchema = new mongoose.Schema({
     required: true,
     unique: true
   },
+  name: {
+    type: String,
+    required: true
+  },
   hashedPassword: {
     type: String,
     required: true
   },
+  event: [eventSchema],
   token: String
 }, {
   timestamps: true,
