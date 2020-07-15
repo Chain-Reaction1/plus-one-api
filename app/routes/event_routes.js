@@ -17,7 +17,7 @@ const handle404 = customErrors.handle404
 const requireOwnership = customErrors.requireOwnership
 
 // this is middleware that will remove blank fields from `req.body`, e.g.
-// { example: { title: '', text: 'foo' } } -> { example: { text: 'foo' } }
+// { event: { title: '', text: 'foo' } } -> { event: { text: 'foo' } }
 const removeBlanks = require('../../lib/remove_blank_fields')
 // passing this as a second argument to `router.<verb>` will make it
 // so that a token MUST be passed for that route to be available
@@ -28,8 +28,8 @@ const requireToken = passport.authenticate('bearer', { session: false })
 const router = express.Router()
 
 // INDEX
-// GET /examples
-router.get('/events', requireToken, (req, res, next) => {
+// GET /events
+router.get('/events', (req, res, next) => {
   Event.find()
     .then(events => {
       // `events` will be an array of Mongoose documents
@@ -49,7 +49,7 @@ router.get('/events/:id', requireToken, (req, res, next) => {
   // req.params.id will be set based on the `:id` in the route
   Event.findById(req.params.id)
     .then(handle404)
-    // if `findById` is succesful, respond with 200 and "example" JSON
+    // if `findById` is succesful, respond with 200 and "event" JSON
     .then(event => res.status(200).json({ event: event.toObject() }))
     // if an error occurs, pass it to the handler
     .catch(next)
@@ -58,7 +58,7 @@ router.get('/events/:id', requireToken, (req, res, next) => {
 // CREATE
 // POST /events
 router.post('/events', requireToken, (req, res, next) => {
-  // set owner of new example to be current user
+  // set owner of new event to be current user
   req.body.event.owner = req.user.id
 
   Event.create(req.body.event)
