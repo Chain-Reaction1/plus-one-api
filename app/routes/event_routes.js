@@ -75,28 +75,28 @@ router.post('/events', requireToken, (req, res, next) => {
 
 // UPDATE
 // PATCH /events/5a7db6c74d55bc51bdf39793
-router.patch('/events/:id', requireToken, removeBlanks, (req, res, next) => {
-  // if the client attempts to change the `owner` property by including a new
-  // owner, prevent that by deleting that key/value pair
-  delete req.body.event.owner
-
-  Event.findById(req.params.id)
-    .then(handle404)
-    .then(event => {
-      // pass the `req` object and the Mongoose record to `requireOwnership`
-      // it will throw an error if the current user isn't the owner
-      requireOwnership(req, event)
-
-      // pass the result of Mongoose's `.update` to the next `.then`
-      return event.updateOne(req.body.event)
-    })
-    // if that succeeded, return 204 and no JSON
-    .then(() => res.sendStatus(204))
-    // if an error occurs, pass it to the handler
-    .catch(next)
-})
+// router.patch('/events/:id', requireToken, removeBlanks, (req, res, next) => {
+//   // if the client attempts to change the `owner` property by including a new
+//   // owner, prevent that by deleting that key/value pair
+//   delete req.body.event.owner
+//
+//   Event.findById(req.params.id)
+//     .then(handle404)
+//     .then(event => {
+//       // pass the `req` object and the Mongoose record to `requireOwnership`
+//       // it will throw an error if the current user isn't the owner
+//       requireOwnership(req, event)
+//
+//       // pass the result of Mongoose's `.update` to the next `.then`
+//       return event.updateOne(req.body.event)
+//     })
+//     // if that succeeded, return 204 and no JSON
+//     .then(() => res.sendStatus(204))
+//     // if an error occurs, pass it to the handler
+//     .catch(next)
+// })
 // Adds a user id to the guests array for RSVP feature
-router.patch('/events/:id/rsvp', requireToken, (req, res, next) => {
+router.patch('/events/:id/rsvps', requireToken, (req, res, next) => {
   delete req.body.event.owner
   Event.findById(req.params.id)
     .then(handle404)
@@ -122,19 +122,26 @@ router.delete('/events/:id', requireToken, (req, res, next) => {
     // if an error occurs, pass it to the handler
     .catch(next)
 })
-
-router.delete('/events/:id/rsvp/:userid', requireToken, (req, res, next) => {
-  Event.findById(req.params.id)
-    .then(() => console.log(req.params.id))
-    .then(handle404)
-    .then(event => {
-      // delete the event ONLY IF the above didn't throw
-      event.guests.deleteOne({_id: req.params.userid})
-    })
-    // send back 204 and no content if the deletion succeeded
-    .then(() => res.sendStatus(204))
-    // if an error occurs, pass it to the handler
-    .catch(next)
-})
+// Removing an RSVP
+// router.delete('/events/:id/rsvps/:userid', requireToken, (req, res, next) => {
+//   const userId = req.params.userid
+//   const eventId = req.params.id
+//   Event.findById(eventId)
+//     .then(handle404)
+//     .then(event => {
+//       console.log(event)
+//       console.log(req.params.userid)
+//       console.log(event.rsvps)
+//       // filters out guests list to exclude user we want to delete
+//       event.rsvps.filter(id => id !== userId)
+//       // delete the event ONLY IF the above didn't throw
+//       // event.guests.id(userId).remove()
+//       return event.save()
+//     })
+//     // send back 204 and no content if the deletion succeeded
+//     .then(() => res.sendStatus(204))
+//     // if an error occurs, pass it to the handler
+//     .catch(next)
+// })
 
 module.exports = router

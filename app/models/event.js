@@ -1,4 +1,5 @@
 const mongoose = require('mongoose')
+const rsvpSchema = require('./rsvpSchema')
 
 const eventSchema = new mongoose.Schema({
   place: {
@@ -17,10 +18,7 @@ const eventSchema = new mongoose.Schema({
     type: String,
     required: true
   },
-  guests: [{
-    type: mongoose.Schema.Types.ObjectId,
-    ref: 'User'
-  }],
+  rsvps: [rsvpSchema],
   owner: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'User',
