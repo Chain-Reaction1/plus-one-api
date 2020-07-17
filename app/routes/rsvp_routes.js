@@ -3,8 +3,8 @@ const express = require('express')
 // Passport docs: http://www.passportjs.org/docs/
 const passport = require('passport')
 
-// pull in Mongoose model for events
-const Event = require('../models/event')
+// pull in Mongoose model for kickbacks
+const Kickback = require('../models/kickback')
 
 // this is a collection of methods that help us detect situations when we need
 // to throw a custom error
@@ -17,7 +17,7 @@ const handle404 = customErrors.handle404
 // const requireOwnership = customErrors.requireOwnership
 
 // this is middleware that will remove blank fields from `req.body`, e.g.
-// { event: { title: '', text: 'foo' } } -> { event: { text: 'foo' } }
+// { kickback: { title: '', text: 'foo' } } -> { kickback: { text: 'foo' } }
 // const removeBlanks = require('../../lib/remove_blank_fields')
 // passing this as a second argument to `router.<verb>` will make it
 // so that a token MUST be passed for that route to be available
@@ -29,39 +29,39 @@ const router = express.Router()
 
 // CREATE
 // POST
-router.post('/events/:eventId/rsvps/', requireToken, (req, res, next) => {
+router.post('/kickbacks/:kickbackId/rsvps/', requireToken, (req, res, next) => {
   const rsvpData = req.body.guest
   // console.log(rsvpData)
   // console.log(req.body)
-  const eventId = req.params.eventId
+  const kickbackId = req.params.kickbackId
 
   // find the restaurant by its id
-  Event.findById(eventId)
+  Kickback.findById(kickbackId)
     .then(handle404)
-    .then(event => {
+    .then(kickback => {
       // add review to restaurant
-      event.rsvps.push(rsvpData)
+      kickback.rsvps.push(rsvpData)
       // save restaurant
-      return event.save()
+      return kickback.save()
     })
     // send responsne back to client
-    .then(event => res.status(201).json({event: event}))
+    .then(kickback => res.status(201).json({kickback: kickback}))
     .catch(next)
 })
 
 // DESTROY
 // DELETE
-router.delete('/events/:eventId/rsvps/:id', requireToken, (req, res, next) => {
+router.delete('/kickbacks/:kickbackId/rsvps/:id', requireToken, (req, res, next) => {
   const id = req.params.id
-  const eventId = req.params.eventId
-  Event.findById(eventId)
+  const kickbackId = req.params.kickbackId
+  Kickback.findById(kickbackId)
     .then(handle404)
-    .then(event => {
+    .then(kickback => {
       // console.log(id)
-      // console.log(event)
-      // console.log(event.rsvps)
-      event.rsvps.id(id).remove()
-      return event.save()
+      // console.log(kickback)
+      // console.log(kickback.rsvps)
+      kickback.rsvps.id(id).remove()
+      return kickback.save()
     })
     .then(() => res.sendStatus(204))
     .catch(next)

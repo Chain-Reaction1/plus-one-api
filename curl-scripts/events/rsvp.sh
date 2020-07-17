@@ -1,7 +1,7 @@
 #!/bin/bash
 
 API="http://localhost:4741"
-URL_PATH="/events"
+URL_PATH="/kickbacks"
 
 curl "${API}${URL_PATH}/${ID}/rsvps" \
   --include \
@@ -9,7 +9,7 @@ curl "${API}${URL_PATH}/${ID}/rsvps" \
   --header "Content-Type: application/json" \
 --header "Authorization: Bearer ${TOKEN}" \
 --data '{
-    "event": {
+    "kickback": {
       "rsvps": "'"${USER}"'"
     }
   }'
