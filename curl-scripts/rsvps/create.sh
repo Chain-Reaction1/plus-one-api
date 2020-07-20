@@ -7,7 +7,8 @@ curl "${API}${URL_PATH}/${ID}/rsvps" \
   --header "Content-Type: application/json" \
   --header "Authorization: Bearer ${TOKEN}" \
   --data '{
-    "guest": "'"${USERID}"'"
+    "guest": "'"${USERID}"'",
+    "name": "'"${NAME}"'"
   }'
 
 echo

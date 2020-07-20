@@ -31,7 +31,6 @@ const router = express.Router()
 // GET /kickbacks
 router.get('/kickbacks', (req, res, next) => {
   Kickback.find()
-    .populate('guests')
     .then(kickbacks => {
       // `kickbacks` will be an array of Mongoose documents
       // we want to convert each one to a POJO, so we use `.map` to

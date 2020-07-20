@@ -30,19 +30,15 @@ const router = express.Router()
 // CREATE
 // POST
 router.post('/kickbacks/:kickbackId/rsvps/', requireToken, (req, res, next) => {
-  const rsvpData = req.body.guest
+  const rsvpData = req.body
   const kickbackId = req.params.kickbackId
 
-  // find the restaurant by its id
   Kickback.findById(kickbackId)
     .then(handle404)
     .then(kickback => {
-      // add review to restaurant
       kickback.rsvps.push(rsvpData)
-      // save restaurant
       return kickback.save()
     })
-    // send responsne back to client
     .then(kickback => res.status(201).json({kickback: kickback}))
     .catch(next)
 })
