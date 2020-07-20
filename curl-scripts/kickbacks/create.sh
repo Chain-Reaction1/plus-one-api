@@ -1,7 +1,7 @@
 #!/bin/bash
 
 API="http://localhost:4741"
-URL_PATH="/examples"
+URL_PATH="/kickbacks"
 
 curl "${API}${URL_PATH}" \
   --include \
@@ -9,9 +9,12 @@ curl "${API}${URL_PATH}" \
   --header "Content-Type: application/json" \
   --header "Authorization: Bearer ${TOKEN}" \
   --data '{
-    "example": {
-      "text": "'"${TEXT}"'",
-      "title": "'"${TITLE}"'"
+    "kickback": {
+      "kickbackName": "'"${NAME}"'",
+      "place": "'"${PLACE}"'",
+      "date": "'"${DATE}"'",
+      "time": "'"${TIME}"'",
+      "description": "'"${DESCRIPTION}"'"
     }
   }'
 

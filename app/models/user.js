@@ -1,5 +1,5 @@
 const mongoose = require('mongoose')
-const eventSchema = require('./eventSchema')
+const kickbackSchema = require('./kickbackSchema')
 
 const userSchema = new mongoose.Schema({
   email: {
@@ -15,7 +15,7 @@ const userSchema = new mongoose.Schema({
     type: String,
     required: true
   },
-  event: [eventSchema],
+  kickback: [kickbackSchema],
   token: String
 }, {
   timestamps: true,

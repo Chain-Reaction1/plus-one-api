@@ -1,6 +1,10 @@
 const mongoose = require('mongoose')
 
-const eventSchema = new mongoose.Schema({
+const kickbackSchema = new mongoose.Schema({
+  kickbackName: {
+    type: String,
+    required: true
+  },
   place: {
     type: String,
     required: true
@@ -17,10 +21,6 @@ const eventSchema = new mongoose.Schema({
     type: String,
     required: true
   },
-  // guests: [{
-  //   type: mongoose.Schema.Types.ObjectId,
-  //   ref: 'User'
-  // }],
   owner: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'User',
@@ -30,4 +30,4 @@ const eventSchema = new mongoose.Schema({
   timestamps: true
 })
 
-module.exports = eventSchema
+module.exports = kickbackSchema
