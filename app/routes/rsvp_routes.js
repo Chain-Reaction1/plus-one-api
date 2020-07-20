@@ -31,8 +31,6 @@ const router = express.Router()
 // POST
 router.post('/kickbacks/:kickbackId/rsvps/', requireToken, (req, res, next) => {
   const rsvpData = req.body.guest
-  // console.log(rsvpData)
-  // console.log(req.body)
   const kickbackId = req.params.kickbackId
 
   // find the restaurant by its id
@@ -57,9 +55,6 @@ router.delete('/kickbacks/:kickbackId/rsvps/:id', requireToken, (req, res, next)
   Kickback.findById(kickbackId)
     .then(handle404)
     .then(kickback => {
-      // console.log(id)
-      // console.log(kickback)
-      // console.log(kickback.rsvps)
       kickback.rsvps.id(id).remove()
       return kickback.save()
     })

@@ -95,17 +95,6 @@ router.patch('/kickbacks/:id', requireToken, removeBlanks, (req, res, next) => {
     // if an error occurs, pass it to the handler
     .catch(next)
 })
-// Adds a user id to the guests array for RSVP feature
-// router.patch('/kickbacks/:id/rsvps', requireToken, (req, res, next) => {
-//   delete req.body.kickback.owner
-//   Kickback.findById(req.params.id)
-//     .then(handle404)
-//     .then(kickback => {
-//       return kickback.updateOne(req.body.kickback)
-//     })
-//     .then(() => res.sendStatus(204))
-//     .catch(next)
-// })
 // DESTROY
 // DELETE /kickbacks/5a7db6c74d55bc51bdf39793
 router.delete('/kickbacks/:id', requireToken, (req, res, next) => {
@@ -122,26 +111,5 @@ router.delete('/kickbacks/:id', requireToken, (req, res, next) => {
     // if an error occurs, pass it to the handler
     .catch(next)
 })
-// Removing an RSVP
-// router.delete('/kickbacks/:id/rsvps/:userid', requireToken, (req, res, next) => {
-//   const userId = req.params.userid
-//   const kickbackId = req.params.id
-//   kickback.findById(kickbackId)
-//     .then(handle404)
-//     .then(kickback => {
-//       console.log(kickback)
-//       console.log(req.params.userid)
-//       console.log(kickback.rsvps)
-//       // filters out guests list to exclude user we want to delete
-//       kickback.rsvps.filter(id => id !== userId)
-//       // delete the kickback ONLY IF the above didn't throw
-//       // kickback.guests.id(userId).remove()
-//       return kickback.save()
-//     })
-//     // send back 204 and no content if the deletion succeeded
-//     .then(() => res.sendStatus(204))
-//     // if an error occurs, pass it to the handler
-//     .catch(next)
-// })
 
 module.exports = router
