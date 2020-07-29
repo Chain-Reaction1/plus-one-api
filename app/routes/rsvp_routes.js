@@ -14,7 +14,7 @@ const customErrors = require('../../lib/custom_errors')
 const handle404 = customErrors.handle404
 // we'll use this function to send 401 when a user tries to modify a resource
 // that's owned by someone else
-// const requireOwnership = customErrors.requireOwnership
+const requireOwnership = customErrors.requireOwnership
 
 // this is middleware that will remove blank fields from `req.body`, e.g.
 // { kickback: { title: '', text: 'foo' } } -> { kickback: { text: 'foo' } }
@@ -51,6 +51,7 @@ router.delete('/kickbacks/:kickbackId/rsvps/:id', requireToken, (req, res, next)
   Kickback.findById(kickbackId)
     .then(handle404)
     .then(kickback => {
+      requireOwnership(req, kickback)
       kickback.rsvps.id(id).remove()
       return kickback.save()
     })
